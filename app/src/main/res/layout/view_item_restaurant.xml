@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    android:layout_height="match_parent">
+    
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/img_item"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/sample_food" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attach_money_black_24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/img_item"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <RatingBar
+            android:id="@+id/myRatingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:isIndicator="true" />
+
+        <TextView
+            android:id="@+id/tv_rating_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/myRatingBar"
+            android:paddingLeft="3dp"
+            android:text="135"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_title"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_below="@+id/myRatingBar"
+           android:maxLines="1"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_tags"
+           android:layout_below="@+id/tv_title"
+            android:maxLines="1"
+            />
+
+        <ImageView
+            android:id="@+id/img_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_tags"
+            android:paddingTop="8dp"
+            android:src="@drawable/ic_settings_input_svideo_black_24dp"/>
+
+        <TextView
+            android:id="@+id/tv_lead_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_type"
+            android:layout_alignParentRight="true"
+            android:text="@string/tv_time"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
