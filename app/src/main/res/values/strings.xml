@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Restaurant_Assign</string>
     
-    <string name="tv_title">The Coffee Bean &amp; Tea Leaf (Tiong Bahru Plaza)</string>
+    <string name="tv_title">The Coffee Bean &amp; Tea Leaf</string>
     <string name="tv_tags">Halal,European</string>
     <string name="tv_time">delivers in 45 min</string>
+    <string name="add_short">Star Vista</string>
+    <string name="list_restaurant">Star Vista</string>
+
 
 </resources>

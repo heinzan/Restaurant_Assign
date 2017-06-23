@@ -1,11 +1,13 @@
 package com.heinzan.restaurant_assign.views.holders;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.heinzan.restaurant_assign.R;
+import com.heinzan.restaurant_assign.data.responses.RestaurantListResponse;
 import com.heinzan.restaurant_assign.data.vos.RestaurantVO;
 
 import butterknife.BindView;
@@ -37,8 +39,15 @@ public class RestaurantViewHolder extends BaseViewHolder<RestaurantVO> {
     @BindView(R.id.tv_lead_time)
     TextView tvleadtime;
 
+    @BindView(R.id.tv_add_short)
+    TextView tvaddshort;
+
+/*    @BindView(R.id.list_restaurant)
+    EditText listRestaurant;*/
+
 
     private RestaurantVO mRestaurant;
+    private RestaurantListResponse mRestaurnatListResponse;
 
     public RestaurantViewHolder(View itemView) {
         super(itemView);
@@ -49,10 +58,19 @@ public class RestaurantViewHolder extends BaseViewHolder<RestaurantVO> {
 
         mRestaurant = data;
 
+        //listRestaurant.setText(mRestaurnatListResponse.getRestaurnatList().size());
+        String addshort=data.getAddrShort();
+
         my_ratingbar.setRating(data.getAverageRatingValue().floatValue());
         rating_count.setText("(" + data.getTotalRatingCount() + ")");
-        tvtitle.setText(data.getTitle() + "(" + data.getAddrShort() + ")");
-        tvleadtime.setText("delivers in " + data.getLeadTimeInMin() + "min");
+        tvtitle.setText(data.getTitle() );
+
+        if (addshort != null && !addshort.isEmpty() && !addshort.equals("null")){
+            tvaddshort.setText(" ("+addshort+")");
+        }else {
+            tvaddshort.setVisibility(View.INVISIBLE);
+        }
+        tvleadtime.setText("delivers in " + data.getLeadTimeInMin() + " min");
 
         boolean isad = data.getAd();
 
@@ -70,8 +88,11 @@ public class RestaurantViewHolder extends BaseViewHolder<RestaurantVO> {
             if(builder.length()>0){
                 builder.append(",");
             }
-            builder.append(s).append(s);
+            builder.append(s);
+
         }
+
         tvtags.setText(builder.toString());
+
     }
 }

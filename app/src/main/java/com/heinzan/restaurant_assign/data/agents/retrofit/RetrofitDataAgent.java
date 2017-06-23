@@ -2,8 +2,10 @@ package com.heinzan.restaurant_assign.data.agents.retrofit;
 
 import android.util.Log;
 
+import com.google.common.eventbus.EventBus;
 import com.google.gson.Gson;
 import com.heinzan.restaurant_assign.data.responses.RestaurantListResponse;
+import com.heinzan.restaurant_assign.events.RestaurantLoadEvent;
 import com.heinzan.restaurant_assign.utils.RestaurantConstants;
 
 import java.util.concurrent.TimeUnit;
@@ -57,6 +59,8 @@ public class RetrofitDataAgent {
 
                 RestaurantListResponse restaurantListResponse=response.body();
                 Log.d("APICall","RESPONSE"+restaurantListResponse);
+
+                org.greenrobot.eventbus.EventBus.getDefault().post(new RestaurantLoadEvent(restaurantListResponse.getRestaurnatList()));
 
 
             }

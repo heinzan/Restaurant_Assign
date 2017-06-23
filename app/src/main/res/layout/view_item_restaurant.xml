@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_margin="8dp"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -40,7 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:isIndicator="true" />
+            android:isIndicator="true"
+            android:progressTint="@color/duskYellow"
+            android:theme="@style/RatingBar"/>
 
         <TextView
             android:id="@+id/tv_rating_count"
@@ -53,7 +55,7 @@
         <ImageView
             android:id="@+id/ad_mark"
             android:layout_width="32dp"
-            android:layout_height="16dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:src="@drawable/ad_mark"/>
 
@@ -64,10 +66,22 @@
             android:text="@string/tv_title"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:layout_below="@+id/myRatingBar"
-           android:maxLines="1"
-            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/colorBlack"
             />
 
+        <TextView
+            android:id="@+id/tv_add_short"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_short"
+            android:layout_toRightOf="@id/tv_title"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_alignBaseline="@id/tv_title"
+            android:textColor="@color/colorBlack"
+            android:ellipsize="end"
+            android:maxLines="1"/>
         <TextView
             android:id="@+id/tv_tags"
             android:layout_width="wrap_content"
