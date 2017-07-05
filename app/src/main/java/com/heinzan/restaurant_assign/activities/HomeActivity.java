@@ -50,8 +50,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this,this);
 
-        RetrofitDataAgent.getInstance().loadRestaurants();
-
         mRestaurantAdapter=new RestaurantAdapter(this);
         rvRestaurant.setLayoutManager(new LinearLayoutManager(this));
         rvRestaurant.setAdapter(mRestaurantAdapter);
