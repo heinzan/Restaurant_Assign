@@ -1,6 +1,7 @@
 package com.heinzan.restaurant_assign;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.heinzan.restaurant_assign.data.agents.retrofit.RetrofitDataAgent;
 
@@ -17,4 +18,7 @@ public class RestaurantApp extends Application {
     }
 
 
+    public static Context getContext() {
+        return getContext();
+    }
 }

@@ -1,6 +1,11 @@
 package com.heinzan.restaurant_assign.data.vos;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
+import com.heinzan.restaurant_assign.RestaurantApp;
+
+import java.util.List;
 
 /**
  * Created by HAZin on 6/20/2017.
@@ -70,5 +75,10 @@ public class RestaurantVO {
 
     public Boolean getNew() {
         return isNew;
+    }
+
+    public static void saveRestaurants(List<RestaurantVO> restaurantlist){
+        Context context = RestaurantApp.getContext();
+
     }
 }

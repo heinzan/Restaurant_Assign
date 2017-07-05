@@ -1,6 +1,7 @@
 package com.heinzan.restaurant_assign.data.persistence;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -46,6 +47,9 @@ public class RestaurantsContract {
             return uri.getQueryParameter(COLUMN_TITLE);
         }
 
+        public static Uri buildRestaurantUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 
     public static final class RestaurantTagsEntry implements BaseColumns{
@@ -64,6 +68,12 @@ public class RestaurantsContract {
         public static final String COLUMN_TAGS="tags";
 
 
+        public static String getRestaurantTitleFromParam(Uri uri) {
+            return uri.getQueryParameter(COLUMN_RESTAURANTS_TITLE);
+        }
 
+        public static Uri buildRestaurantTagsUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 }
