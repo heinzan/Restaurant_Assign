@@ -1,5 +1,9 @@
 package com.heinzan.restaurant_assign.activities;
 
+import android.database.Cursor;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,29 +13,28 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.heinzan.restaurant_assign.R;
+import com.heinzan.restaurant_assign.RestaurantApp;
 import com.heinzan.restaurant_assign.adapters.RestaurantAdapter;
-import com.heinzan.restaurant_assign.data.agents.retrofit.RetrofitDataAgent;
-import com.heinzan.restaurant_assign.data.responses.RestaurantListResponse;
+import com.heinzan.restaurant_assign.data.models.RestaurantModel;
+import com.heinzan.restaurant_assign.data.persistence.RestaurantsContract;
 import com.heinzan.restaurant_assign.data.vos.RestaurantVO;
 import com.heinzan.restaurant_assign.events.RestaurantLoadEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.rv_restaurant)
     RecyclerView rvRestaurant;
@@ -103,5 +106,39 @@ public class HomeActivity extends AppCompatActivity {
         mRestaurantAdapter.setNewData(event.getRestaurantVOList());
         //String listCount = String.valueOf(event.getRestaurantVOList().size());
         listRestaurant.setText("  "+String.valueOf(event.getRestaurantVOList().size())+" restaurants deliver to you");
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        return new CursorLoader(getApplicationContext(),
+                RestaurantsContract.RestaurantEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                RestaurantsContract.RestaurantEntry.COLUMN_TITLE + " DESC");
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        List<RestaurantVO> attractionList = new ArrayList<>();
+        if (data != null && data.moveToFirst()) {
+            do {
+                RestaurantVO attraction = RestaurantVO.parseFromCursor(data);
+                //attraction.setImages(AttractionVO.loadAttractionImagesByTitle(attraction.getTitle()));
+                attractionList.add(attraction);
+            } while (data.moveToNext());
+        }
+
+        Log.d(RestaurantApp.TAG, "Retrieved attractions DESC : " + attractionList.size());
+        mRestaurantAdapter.setNewData(attractionList);
+
+       // RestaurantModel.getInstance().setStoredData(attractionList);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

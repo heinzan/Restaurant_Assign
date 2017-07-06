@@ -1,9 +1,13 @@
 package com.heinzan.restaurant_assign.data.vos;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 import com.heinzan.restaurant_assign.RestaurantApp;
+import com.heinzan.restaurant_assign.data.persistence.RestaurantsContract;
 
 import java.util.List;
 
@@ -32,7 +36,6 @@ public class RestaurantVO {
     private Boolean isAd;
 
     @SerializedName("tags")
-
     private String[] tags;
 
     @SerializedName("lead-time-in-min")
@@ -77,8 +80,65 @@ public class RestaurantVO {
         return isNew;
     }
 
-    public static void saveRestaurants(List<RestaurantVO> restaurantlist){
-        Context context = RestaurantApp.getContext();
+    public static void saveRestaurants(Context context, List<RestaurantVO> restaurantlist){
 
+        ContentValues[] restaurantCVs = new ContentValues[restaurantlist.size()];
+        for (int index = 0; index < restaurantlist.size(); index++) {
+            RestaurantVO restaurant = restaurantlist.get(index);
+            restaurantCVs[index] = restaurant.parseToContentValues();
+
+            //Bulk insert into attraction_images.
+            RestaurantVO.saveRestaurantsTags(context,restaurant.getTitle(), restaurant.getTags());
+        }
+        int insertedCount = context.getContentResolver().bulkInsert(RestaurantsContract.RestaurantEntry.CONTENT_URI, restaurantCVs);
+
+        Log.d(RestaurantApp.TAG, "Bulk inserted into attraction table : " + insertedCount);
+
+    }
+
+    private static void saveRestaurantsTags(Context context,String title, String[] tags) {
+        ContentValues[] restaurantTagCVs = new ContentValues[tags.length];
+        for (int index = 0; index < tags.length; index++) {
+            String tag = tags[index];
+
+            ContentValues cv = new ContentValues();
+            cv.put(RestaurantsContract.RestaurantTagsEntry.COLUMN_RESTAURANTS_TITLE, title);
+            cv.put(RestaurantsContract.RestaurantTagsEntry.COLUMN_TAGS, tag);
+
+            restaurantTagCVs[index] = cv;
+        }
+
+
+        int insertCount = context.getContentResolver().bulkInsert(RestaurantsContract.RestaurantTagsEntry.CONTENT_URI, restaurantTagCVs);
+
+        Log.d(RestaurantApp.TAG, "Bulk inserted into attraction table : " + insertCount);
+    }
+
+    private ContentValues parseToContentValues() {
+        ContentValues cv = new ContentValues();
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_TITLE, title);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_ADDR_SHORT, addrShort);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_TOTAL_RATING_COUNT, totalRatingCount);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_IMAGE, image);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_AVERAGE_RATING_VALUE, averageRatingValue);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_IS_AD, isAd);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_LEAD_TIME_IN_MIN, leadTimeInMin);
+        cv.put(RestaurantsContract.RestaurantEntry.COLUMN_IS_NEW, isNew);
+        return cv;
+
+
+    }
+
+    public static RestaurantVO parseFromCursor(Cursor data) {
+        RestaurantVO restaurant = new RestaurantVO();
+        restaurant.title = data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_TITLE));
+        restaurant.addrShort = data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_ADDR_SHORT));
+        restaurant.totalRatingCount = Integer.parseInt(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_TOTAL_RATING_COUNT)));
+        restaurant.image = data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IMAGE));
+        restaurant.averageRatingValue = Double.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_AVERAGE_RATING_VALUE)));
+        restaurant.isAd = Boolean.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_AD)));
+        restaurant.leadTimeInMin = Integer.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_LEAD_TIME_IN_MIN)));
+        restaurant.isNew = Boolean.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_NEW)));
+        return restaurant;
     }
 }
