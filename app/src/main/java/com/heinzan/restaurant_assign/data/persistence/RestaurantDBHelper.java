@@ -20,7 +20,7 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_RESTAURANT_TABLE = "CREATE TABLE " + RestaurantEntry.TABLE_NAME + " (" +
             RestaurantEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             RestaurantEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-            RestaurantEntry.COLUMN_ADDR_SHORT + " TEXT NOT NULL, " +
+            RestaurantEntry.COLUMN_ADDR_SHORT + " TEXT , " +
             RestaurantEntry.COLUMN_IMAGE + " TEXT, " +
             RestaurantEntry.COLUMN_TOTAL_RATING_COUNT + " TEXT NOT NULL, " +
             RestaurantEntry.COLUMN_AVERAGE_RATING_VALUE + " TEXT NOT NULL, " +
@@ -37,8 +37,8 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
             RestaurantTagsEntry.COLUMN_RESTAURANTS_TITLE + " TEXT NOT NULL, " +
             RestaurantTagsEntry.COLUMN_TAGS + " TEXT NOT NULL, " +
 
-
-            " UNIQUE (" + RestaurantTagsEntry.COLUMN_RESTAURANTS_TITLE + ") ON CONFLICT IGNORE" +
+            " UNIQUE (" + RestaurantTagsEntry.COLUMN_RESTAURANTS_TITLE+ ", " +
+            RestaurantTagsEntry.COLUMN_TAGS + ") ON CONFLICT IGNORE" +
             " );";
 
     public RestaurantDBHelper(Context context) {

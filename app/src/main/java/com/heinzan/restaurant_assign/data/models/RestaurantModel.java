@@ -2,7 +2,9 @@ package com.heinzan.restaurant_assign.data.models;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.heinzan.restaurant_assign.R;
 import com.heinzan.restaurant_assign.data.vos.RestaurantVO;
 import com.heinzan.restaurant_assign.events.RestaurantLoadEvent;
 
@@ -12,6 +14,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * Created by HAZin on 7/6/2017.
@@ -24,7 +28,10 @@ public class RestaurantModel extends BaseModel {
 
     private List<RestaurantVO> mRestaurantList;
 
-    private Context context;
+    private Context mContext;
+
+    @BindView(R.id.list_restaurant)
+    TextView listRestaurant;
 
     private RestaurantModel() {
         super();
@@ -35,12 +42,15 @@ public class RestaurantModel extends BaseModel {
         }
     }
 
-    public static RestaurantModel getInstance(Context context) {
+    public static RestaurantModel getInstance() {
         if (objInstance == null) {
             objInstance = new RestaurantModel();
-            objInstance.context = context;
         }
         return objInstance;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
     }
 
     public void loadRestaurants() {
@@ -62,10 +72,15 @@ public class RestaurantModel extends BaseModel {
         //broadcastAttractionLoadedWithLocalBroadcastManager();
     }*/
 
+    public void setStoredData(List<RestaurantVO> restaurantList) {
+        mRestaurantList = restaurantList;
+    }
+
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void receiveRestaurantList(RestaurantLoadEvent event) {
         mRestaurantList= event.getRestaurantVOList();
         Log.d("RestaurantLIst",""+event.getRestaurantVOList().get(1).getAd());
-        RestaurantVO.saveRestaurants(context, mRestaurantList);
+        RestaurantVO.saveRestaurants(mContext, mRestaurantList);
+
     }
 }

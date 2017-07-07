@@ -81,7 +81,6 @@ public class RestaurantViewHolder extends BaseViewHolder<RestaurantVO> {
             admark.setVisibility(View.INVISIBLE);
         }
 
-
         StringBuilder builder = new StringBuilder();
         String[] arr = data.getTags();
         for (String s : arr) {

@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.heinzan.restaurant_assign.RestaurantApp;
 import com.heinzan.restaurant_assign.data.persistence.RestaurantsContract;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +35,10 @@ public class RestaurantVO {
 
     @SerializedName("is-ad")
     private Boolean isAd;
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
 
     @SerializedName("tags")
     private String[] tags;
@@ -140,5 +145,23 @@ public class RestaurantVO {
         restaurant.leadTimeInMin = Integer.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_LEAD_TIME_IN_MIN)));
         restaurant.isNew = Boolean.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_NEW)));
         return restaurant;
+    }
+
+    public static String[] loadRestaurnatTagsTitle(Context context,String title) {
+
+        ArrayList<String> tags = new ArrayList<>();
+
+        Cursor cursor = context.getContentResolver().query(RestaurantsContract.RestaurantTagsEntry.buildRestaurnatTagsWithTitle(title),
+                null, null, null, null);
+
+        if(cursor != null && cursor.moveToFirst()) {
+            do {
+                tags.add(cursor.getString(cursor.getColumnIndex(RestaurantsContract.RestaurantTagsEntry.COLUMN_TAGS)));
+            } while (cursor.moveToNext());
+        }
+
+        String[] imageArray = new String[tags.size()];
+        tags.toArray(imageArray);
+        return imageArray;
     }
 }

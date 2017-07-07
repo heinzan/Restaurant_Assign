@@ -75,5 +75,12 @@ public class RestaurantsContract {
         public static Uri buildRestaurantTagsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+        public static Uri buildRestaurnatTagsWithTitle(String restaurantTitle) {
+
+            return CONTENT_URI.buildUpon()
+                    .appendQueryParameter(COLUMN_RESTAURANTS_TITLE, restaurantTitle)
+                    .build();
+        }
     }
 }

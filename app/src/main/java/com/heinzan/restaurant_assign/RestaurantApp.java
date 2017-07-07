@@ -22,7 +22,9 @@ public class RestaurantApp extends Application {
         Stetho.initializeWithDefaults(this);
         context = getApplicationContext();
         //RetrofitDataAgent.getInstance().loadRestaurants();
-        RestaurantModel.getInstance(getApplicationContext()).loadRestaurants();
+
+        RestaurantModel.getInstance().setContext(getApplicationContext());
+        RestaurantModel.getInstance().loadRestaurants();
     }
 
 }

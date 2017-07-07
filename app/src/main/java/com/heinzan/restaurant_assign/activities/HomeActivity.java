@@ -1,6 +1,8 @@
 package com.heinzan.restaurant_assign.activities;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -23,6 +25,7 @@ import com.heinzan.restaurant_assign.data.models.RestaurantModel;
 import com.heinzan.restaurant_assign.data.persistence.RestaurantsContract;
 import com.heinzan.restaurant_assign.data.vos.RestaurantVO;
 import com.heinzan.restaurant_assign.events.RestaurantLoadEvent;
+import com.heinzan.restaurant_assign.utils.RestaurantConstants;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +39,7 @@ import butterknife.ButterKnife;
 
 public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    List<RestaurantVO> mRestaurantList;
     @BindView(R.id.rv_restaurant)
     RecyclerView rvRestaurant;
 
@@ -57,10 +61,11 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         rvRestaurant.setLayoutManager(new LinearLayoutManager(this));
         rvRestaurant.setAdapter(mRestaurantAdapter);
 
-
-
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvRestaurant.getContext(),DividerItemDecoration.VERTICAL);
         rvRestaurant.addItemDecoration(dividerItemDecoration);
+
+        getSupportLoaderManager().initLoader(RestaurantConstants.ATTRACTION_LIST_LOADER, null, this);
+
 
     }
 
@@ -105,8 +110,9 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         srl.setRefreshing(false);
         mRestaurantAdapter.setNewData(event.getRestaurantVOList());
         //String listCount = String.valueOf(event.getRestaurantVOList().size());
-        listRestaurant.setText("  "+String.valueOf(event.getRestaurantVOList().size())+" restaurants deliver to you");
+        listRestaurant.setText("  "+mRestaurantList.size()+" restaurants deliver to you");
     }
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -116,25 +122,27 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
                 null,
                 null,
                 null,
-                RestaurantsContract.RestaurantEntry.COLUMN_TITLE + " DESC");
+                null );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        List<RestaurantVO> attractionList = new ArrayList<>();
+        List<RestaurantVO> restaurantList = new ArrayList<>();
         if (data != null && data.moveToFirst()) {
             do {
-                RestaurantVO attraction = RestaurantVO.parseFromCursor(data);
+                RestaurantVO restaurant = RestaurantVO.parseFromCursor(data);
                 //attraction.setImages(AttractionVO.loadAttractionImagesByTitle(attraction.getTitle()));
-                attractionList.add(attraction);
+                restaurant.setTags(RestaurantVO.loadRestaurnatTagsTitle(getApplicationContext(),restaurant.getTitle()));
+                restaurantList.add(restaurant);
             } while (data.moveToNext());
         }
 
-        Log.d(RestaurantApp.TAG, "Retrieved attractions DESC : " + attractionList.size());
-        mRestaurantAdapter.setNewData(attractionList);
+        Log.d(RestaurantApp.TAG, "Retrieved attractions DESC : " + restaurantList.size());
+        mRestaurantAdapter.setNewData(restaurantList);
 
-       // RestaurantModel.getInstance().setStoredData(attractionList);
+        listRestaurant.setText("  "+restaurantList.size()+" restaurants deliver to you");
+        //RestaurantModel.getInstance(setStoredData(restaurantList));
     }
 
     @Override
