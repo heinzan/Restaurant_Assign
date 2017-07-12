@@ -70,6 +70,7 @@ public class RetrofitDataAgent implements RestaurantDataAgent {
             @Override
             public void onFailure(Call<RestaurantListResponse> call, Throwable t) {
 
+
             }
         });
 

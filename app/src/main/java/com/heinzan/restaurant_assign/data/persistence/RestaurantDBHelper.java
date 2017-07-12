@@ -32,7 +32,7 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
             " );";
 
 
-    private static final String SQL_CREATE_ATTRACTION_IMAGE_TABLE = "CREATE TABLE " + RestaurantTagsEntry.TABLE_NAME + " (" +
+    private static final String SQL_CREATE_RESTAURANT_TAGS_TABLE = "CREATE TABLE " + RestaurantTagsEntry.TABLE_NAME + " (" +
             RestaurantTagsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             RestaurantTagsEntry.COLUMN_RESTAURANTS_TITLE + " TEXT NOT NULL, " +
             RestaurantTagsEntry.COLUMN_TAGS + " TEXT NOT NULL, " +
@@ -50,7 +50,7 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_RESTAURANT_TABLE);
-        db.execSQL(SQL_CREATE_ATTRACTION_IMAGE_TABLE);
+        db.execSQL(SQL_CREATE_RESTAURANT_TAGS_TABLE);
 
     }
 
@@ -58,6 +58,8 @@ public class RestaurantDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + RestaurantEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + RestaurantTagsEntry.TABLE_NAME);
+
+        //TODO
 
     }
 }

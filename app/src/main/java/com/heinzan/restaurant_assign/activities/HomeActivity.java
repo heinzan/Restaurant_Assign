@@ -132,7 +132,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         if (data != null && data.moveToFirst()) {
             do {
                 RestaurantVO restaurant = RestaurantVO.parseFromCursor(data);
-                //attraction.setImages(AttractionVO.loadAttractionImagesByTitle(attraction.getTitle()));
+
                 restaurant.setTags(RestaurantVO.loadRestaurnatTagsTitle(getApplicationContext(),restaurant.getTitle()));
                 restaurantList.add(restaurant);
             } while (data.moveToNext());
@@ -142,7 +142,7 @@ public class HomeActivity extends BaseActivity implements LoaderManager.LoaderCa
         mRestaurantAdapter.setNewData(restaurantList);
 
         listRestaurant.setText("  "+restaurantList.size()+" restaurants deliver to you");
-        //RestaurantModel.getInstance(setStoredData(restaurantList));
+
     }
 
     @Override

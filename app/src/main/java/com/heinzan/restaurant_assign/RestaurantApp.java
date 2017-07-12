@@ -16,14 +16,12 @@ public class RestaurantApp extends Application {
 
     public static final String TAG = "RestaurantApp";
 
-    private static Context context;
 
     public void onCreate(){
         Stetho.initializeWithDefaults(this);
-        context = getApplicationContext();
         //RetrofitDataAgent.getInstance().loadRestaurants();
 
-        RestaurantModel.getInstance().setContext(getApplicationContext());
+        RestaurantModel.init(getApplicationContext());
         RestaurantModel.getInstance().loadRestaurants();
     }
 

@@ -22,7 +22,7 @@ public class RestaurantProvider extends ContentProvider {
     public static final int RESTAURANT = 100;
     public static final int RESTAURANTS_TAGS = 200;
 
-    private static final String sAttractionTitleSelection = RestaurantsContract.RestaurantEntry.COLUMN_TITLE + " = ?";
+    private static final String sRestaurantTitleSelection = RestaurantsContract.RestaurantEntry.COLUMN_TITLE + " = ?";
     private static final String sRestaurantTagsSelectionWithTitle = RestaurantsContract.RestaurantTagsEntry.COLUMN_RESTAURANTS_TITLE + " = ?";
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -53,10 +53,10 @@ public class RestaurantProvider extends ContentProvider {
         int matchUri = sUriMatcher.match(uri);
         switch (matchUri){
             case RESTAURANT:
-                String attractionTitle = RestaurantsContract.RestaurantEntry.getTitleFromParam(uri);
-                if (!TextUtils.isEmpty(attractionTitle)) {
-                    selection = sAttractionTitleSelection;
-                    selectionArgs = new String[]{attractionTitle};
+                String restaurantTitle = RestaurantsContract.RestaurantEntry.getTitleFromParam(uri);
+                if (!TextUtils.isEmpty(restaurantTitle)) {
+                    selection = sRestaurantTitleSelection;
+                    selectionArgs = new String[]{restaurantTitle};
                 }
                 queryCursor = mRestaurantDBHelper.getReadableDatabase().query(RestaurantsContract.RestaurantEntry.TABLE_NAME,
                         projection,

@@ -26,61 +26,31 @@ public class RestaurantModel extends BaseModel {
 
     private static RestaurantModel objInstance;
 
-    private List<RestaurantVO> mRestaurantList;
-
     private Context mContext;
 
-    @BindView(R.id.list_restaurant)
-    TextView listRestaurant;
-
-    private RestaurantModel() {
+    private RestaurantModel(Context context) {
         super();
-        mRestaurantList = new ArrayList<>();
-
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
     }
 
     public static RestaurantModel getInstance() {
         if (objInstance == null) {
-            objInstance = new RestaurantModel();
+            throw new RuntimeException("Error");
         }
         return objInstance;
     }
 
-    public void setContext(Context context) {
-        mContext = context;
+    public static void init(Context context) {
+        objInstance = new RestaurantModel(context);
     }
 
     public void loadRestaurants() {
         dataAgent.loadRestaurants();
     }
 
-    public List<RestaurantVO> getmRestaurantList() {
-        return mRestaurantList;
-    }
-
-    /*public void notifyAttractionsLoaded(List<RestaurantVO> restaurantList) {
-        //Notify that the data is ready - using LocalBroadcast
-        mRestaurantList = restaurantList;
-
-        //keep the data in persistent layer.
-        RestaurantVO.saveRestaurants(context, mRestaurantList);
-
-        //broadcastAttractionLoadedWithEventBus();
-        //broadcastAttractionLoadedWithLocalBroadcastManager();
-    }*/
-
-    public void setStoredData(List<RestaurantVO> restaurantList) {
-        mRestaurantList = restaurantList;
-    }
-
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void receiveRestaurantList(RestaurantLoadEvent event) {
-        mRestaurantList= event.getRestaurantVOList();
         Log.d("RestaurantLIst",""+event.getRestaurantVOList().get(1).getAd());
-        RestaurantVO.saveRestaurants(mContext, mRestaurantList);
+        RestaurantVO.saveRestaurants(mContext, event.getRestaurantVOList());
 
     }
 }

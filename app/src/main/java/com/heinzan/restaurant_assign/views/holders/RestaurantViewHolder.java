@@ -77,7 +77,6 @@ public class RestaurantViewHolder extends BaseViewHolder<RestaurantVO> {
         if (isad) {
             admark.setVisibility(View.VISIBLE);
         } else {
-
             admark.setVisibility(View.INVISIBLE);
         }
 

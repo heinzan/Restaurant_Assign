@@ -34,7 +34,7 @@ public class RestaurantVO {
     private Double averageRatingValue;
 
     @SerializedName("is-ad")
-    private Boolean isAd;
+    private boolean isAd;
 
     public void setTags(String[] tags) {
         this.tags = tags;
@@ -92,7 +92,7 @@ public class RestaurantVO {
             RestaurantVO restaurant = restaurantlist.get(index);
             restaurantCVs[index] = restaurant.parseToContentValues();
 
-            //Bulk insert into attraction_images.
+            //Bulk insert into restaurant_tags.
             RestaurantVO.saveRestaurantsTags(context,restaurant.getTitle(), restaurant.getTags());
         }
         int insertedCount = context.getContentResolver().bulkInsert(RestaurantsContract.RestaurantEntry.CONTENT_URI, restaurantCVs);
@@ -141,9 +141,9 @@ public class RestaurantVO {
         restaurant.totalRatingCount = Integer.parseInt(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_TOTAL_RATING_COUNT)));
         restaurant.image = data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IMAGE));
         restaurant.averageRatingValue = Double.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_AVERAGE_RATING_VALUE)));
-        restaurant.isAd = Boolean.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_AD)));
+        restaurant.isAd =  data.getInt(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_AD)) > 0;
         restaurant.leadTimeInMin = Integer.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_LEAD_TIME_IN_MIN)));
-        restaurant.isNew = Boolean.valueOf(data.getString(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_NEW)));
+        restaurant.isNew = data.getInt(data.getColumnIndex(RestaurantsContract.RestaurantEntry.COLUMN_IS_NEW)) > 0;
         return restaurant;
     }
 
